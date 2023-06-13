@@ -4,28 +4,47 @@
 using namespace std;
 
 int N, M, X, a, b, c;
-int road[1010][1010];
-vector <pair<int,int>> leng[1010];
+int leng[1010];
+int leng_back[1010];
+vector <pair<int,int>> road[1010];
+vector <pair<int, int>> road_back[1010];
 
-void djk(int s)
+void djk(bool dir)
 {
 	priority_queue <pair<int, int>> PQ;
-	road[s][s] = 0;
-	PQ.push({ s,0});
+	leng[X] = 0;
+	leng_back[X] = 0;
+	PQ.push({ X,0 });
+	
 	while (!PQ.empty())
 	{
 		int cost = -PQ.top().second;
 		int cur = PQ.top().first;
 		PQ.pop();
-		for (int i = 0; i < leng[cur].size(); i++)
+		if (dir)
 		{
-			int next = leng[cur][i].first;
-			int ncost = leng[cur][i].second;
-
-			if (road[s][next] > cost + ncost)
+			for (int i = 0; i < road[cur].size(); i++)
 			{
-				road[s][next] = cost + ncost;
-				PQ.push({ next, -road[s][next] });
+				int ncost = road[cur][i].second;
+				int next = road[cur][i].first;
+				if (leng[next] > cost + ncost)
+				{
+					leng[next] = cost + ncost;
+					PQ.push({ next, -leng[next] });
+				}
+			}
+		}
+		else
+		{
+			for (int i = 0; i < road_back[cur].size(); i++)
+			{
+				int ncost = road_back[cur][i].second;
+				int next = road_back[cur][i].first;
+				if (leng_back[next] > cost + ncost)
+				{
+					leng_back[next] = cost + ncost;
+					PQ.push({ next, -leng_back[next] });
+				}
 			}
 		}
 	}
@@ -39,21 +58,20 @@ int main()
 
 	cin >> N >> M >> X;
 	for (int y = 1; y <= N; y++)
-		for (int x = 1; x <= N; x++)
-			road[y][x] = 1e9;
+	{
+		leng[y] = 1e9;
+		leng_back[y] = 1e9;
+	}
 
 	for (int i = 0; i < M; i++)
 	{
 		cin >> a >> b >> c;
-		leng[a].push_back({ b,c });
+		road[a].push_back({ b,c });
+		road_back[b].push_back({ a,c });
 	}
 	int ans = 0;
-	djk(X);
+	djk(0); djk(1);
 	for (int i = 1; i <= N; i++)
-	{
-		if (i == X) continue;
-		djk(i);
-		ans = max(ans, road[i][X] + road[X][i]);
-	}
+		ans = max(ans, leng[i] + leng_back[i]);
 	cout << ans;
 }
