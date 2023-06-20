@@ -1,10 +1,8 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
 int T, N, a, b;
-vector <pair<int, int>> score;
+int score[100010];
 
 int main()
 {
@@ -15,22 +13,20 @@ int main()
 	cin >> T;
 	for (int tc = 1; tc <= T; tc++)
 	{
-		score.clear();
 		cin >> N;
 		for (int i = 0; i < N; i++)
 		{
 			cin >> a >> b;
-			score.push_back({ a,b });
+			score[a] = b;
 		}
-		sort(score.begin(), score.end());
 		int ans = 1;
-		int temp = score[0].second;
-		for (int i = 1; i < N; i++)
+		int temp = score[1];
+		for (int i = 2; i <= N; i++)
 		{
-			if (score[i].second < temp)
+			if (score[i] < temp)
 			{
 				ans++;
-				temp = score[i].second;
+				temp = score[i];
 			}
 		}
 		cout << ans << "\n";
