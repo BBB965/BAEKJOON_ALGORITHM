@@ -9,29 +9,22 @@ public class Main
 	    for (int i = 0; i < T; i++)
 	    {
 	        int N = Integer.parseInt(br.readLine());
-	        int [][] arr = new int[N][2];
+	        int [] arr = new int[N+1];
 	        for (int j = 0; j < N; j++)
 	        {
 	            String [] input = br.readLine().split(" ");
-	            arr[j][0] = Integer.parseInt(input[0]);
-	            arr[j][1] = Integer.parseInt(input[1]);
+	            int a = Integer.parseInt(input[0]);
+	            arr[a] = Integer.parseInt(input[1]);
 	        }
 	        
-	        Arrays.sort(arr, new Comparator<int []>() {
-	            @Override
-	            public int compare(int[] o1, int[] o2) {
-	                return o1[0] - o2[0];
-	            }
-	        });
-	        
 	        int ans = 1;
-	        int temp = arr[0][1];
-	        for (int j = 1; j < N; j++)
+	        int temp = arr[1];
+	        for (int j = 2; j <= N; j++)
 	        {
-	            if (arr[j][1] < temp)
+	            if (arr[j] < temp)
 	            {
 	                ans++;
-	                temp = arr[j][1];
+	                temp = arr[j];
 	            }
 	        }
 	        System.out.println(ans);
