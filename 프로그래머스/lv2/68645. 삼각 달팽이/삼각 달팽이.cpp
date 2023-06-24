@@ -14,37 +14,31 @@ vector<int> solution(int n) {
     while (leng > 0)
     {
         int temp = leng;
-        if (ord == 0)
+        if (ord%3 == 0)
         {
-            ord++;
             while(temp--)
             {
-                x++;
-                tower[x][y] = num;
+                tower[++x][y] = num;
                 num++;
             }
         }
-        else if (ord == 1)
+        else if (ord%3 == 1)
         {
-            ord++;
             while(temp--)
             {
-                y++;
-                tower[x][y] = num;
+                tower[x][++y] = num;
                 num++;
             }
         }
         else
         {
-            ord = 0;
             while(temp--)
             {
-                x--;
-                y--;
-                tower[x][y] = num;
+                tower[--x][--y] = num;
                 num++;
             }
         }
+        ord++;
         leng--;
     }
     for (int i = 1; i <= n; i++)
