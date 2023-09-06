@@ -1,51 +1,48 @@
 #include <string>
 #include <vector>
-#include <algorithm>
+#include <queue>
 using namespace std;
 
-int parent[101] = {0,};
+bool visited[101] = {0,};
+vector <pair<int,int>> vect[101];
 
-bool cmp (const vector<int>& a, const vector<int>& b) {
-    if (a[2] == b[2]) 
+int solution(int n, vector<vector<int>> costs)
+{
+	int answer = 0;
+    for (vector <int> cost : costs)
     {
-        if (a[0] == b[0]) return a[1] < b[1];
-        else return a[0] < b[0];
+    	vect[cost[0]].push_back({cost[1], cost[2]});
+        vect[cost[1]].push_back({cost[0], cost[2]});
     }
-    else return a[2] < b[2];
-}
-
-int isParent(int c) {
-    if (parent[c] == c) return c;
-    else return isParent(parent[c]);
-}
-
-void unionP(int a, int b)
-{
-    int aP = isParent(a);
-    int bP = isParent(b);
-    if (aP < bP) parent[bP] = aP;
-    else parent[aP] = bP;
-}
-
-bool findP(int a, int b) 
-{
-    return isParent(a) == isParent(b) ? true : false;
-}
-
-int solution(int n, vector<vector<int>> costs) {
-    int answer = 0;
     
-    for (int i = 0; i < n; i++) parent[i] = i;
-    sort(costs.begin(), costs.end(), cmp);
+    priority_queue<pair<int,int>> pq;
     
-    for (vector<int> cost : costs)
+    visited[0] = true;
+    for (int i = 0; i < vect[0].size(); i++)
     {
-        if (!findP(cost[0], cost[1]))
+    	int nxt = vect[0][i].first;
+        int nCost = vect[0][i].second;
+        pq.push({-nCost, nxt});
+    }
+    
+    while (!pq.empty())
+    {
+    	int dist =  -pq.top().first;
+        int cur = pq.top().second;
+        pq.pop();
+        
+        if (!visited[cur])
         {
-            answer += cost[2];
-            unionP(cost[0], cost[1]);
+        	visited[cur] = true;
+            answer += dist;
+            
+            for (int i = 0; i < vect[cur].size(); i++)
+            {
+            	int nxt = vect[cur][i].first;
+                int nCost = vect[cur][i].second;
+                if (!visited[nxt]) pq.push({-nCost,nxt});
+            }
         }
     }
-    
     return answer;
 }
