@@ -4,13 +4,16 @@ class Solution {
     public String solution(String s) {
         String answer = "";
         String[] numbers = s.split(" ");
-        List<Integer> num = new ArrayList<>();
-        for (String n : numbers) num.add(Integer.parseInt(n));
+        String minN = numbers[0];
+        String maxN = numbers[0];
         
-        Collections.sort(num);
-        answer += num.get(0);
-        answer += " ";
-        answer += num.get(num.size() - 1);
+        for (String i : numbers)
+        {
+            minN = Integer.parseInt(minN) > Integer.parseInt(i) ? i : minN;
+            maxN = Integer.parseInt(maxN) < Integer.parseInt(i) ? i : maxN;
+        }
+        
+        answer += minN + " " + maxN;
         return answer;
     }
 }

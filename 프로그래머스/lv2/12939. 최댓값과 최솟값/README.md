@@ -1,10 +1,10 @@
 # [level 2] 최댓값과 최솟값 - 12939 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12939?language=java) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12939) 
 
 ### 성능 요약
 
-메모리: 74.1 MB, 시간: 3.33 ms
+메모리: 71.8 MB, 시간: 16.56 ms
 
 ### 구분
 
